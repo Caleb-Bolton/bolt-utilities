@@ -1,3 +1,16 @@
+# Opens the app documents of a given app on a given simulator. 
+# 
+# simdocs [option] [number]
+# 
+# -d, --device      When followed by a number n, this argument selects the nth most recently modified device to open. Default is 1.
+# 
+# -a, --app         When followed by a number n, this argument selects the nth most recently modified app on the given simulator device to open. Default is 1.
+# 
+# Examples:
+# simdocs -d 2 -a 3
+# simdocs -d 2
+# simdocs -a 2
+
 # Alfred passes script input as one string in the first command line arg
 # Slice the string and set the result as the command line args for this script
 set -- "${(z)1}"
