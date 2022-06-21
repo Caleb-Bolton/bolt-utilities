@@ -1,0 +1,44 @@
+# Alfred passes script input as one string in the first command line arg
+# Slice the string and set the result as the command line args for this script
+commands_array=($(echo "$1" | tr ',' '\n'))
+eval set -- "$commands_array"
+
+# Default arguments
+DEVICE=1
+APP=1
+
+# Parse command line args
+#POSITIONAL_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -d|--device)
+      DEVICE="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -a|--app)
+      APP="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1") # save positional arg
+      shift # past argument
+      ;;
+  esac
+done
+
+set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+
+# End parsing command line args
+
+DEVICE_DIR=${HOME}/Library/Developer/CoreSimulator/Devices
+SELECTED_DEVICE_DIR=${DEVICE_DIR}/$(ls -t ${DEVICE_DIR} | sed -n -e ''"${DEVICE}"'{p;q;}')
+APP_DIR=${SELECTED_DEVICE_DIR}/data/Containers/Data/Application/
+SELECTED_APP_DIR=${APP_DIR}$(ls -t ${APP_DIR} | sed -n -e ''"${APP}"'{p;q;}')
+open ${SELECTED_APP_DIR}/Documents
