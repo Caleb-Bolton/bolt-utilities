@@ -1,7 +1,6 @@
 # Alfred passes script input as one string in the first command line arg
 # Slice the string and set the result as the command line args for this script
-commands_array=($(echo "$1" | tr ',' '\n'))
-eval set -- "$commands_array"
+set -- "${(z)1}"
 
 # Default arguments
 DEVICE=1
